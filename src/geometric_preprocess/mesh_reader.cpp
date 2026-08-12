@@ -1,4 +1,4 @@
-#include"mesh_reader.hpp"
+#include"include/geometric_preprocess/mesh_reader.hpp"
 #include"types.hpp"
 #include<string>
 #include<fstream>
@@ -15,17 +15,17 @@
     one for nodes, one for edges and another for triangles, where the key is the id and the object is the value. It is important to remember that Gmsh
     only gives us the boundary edges, not the interior ones.
 */
-namespace fvm_mesh_reader
+namespace mr
 {
-    bool mesh_reader_function(const std::string& file_name, fvm_types::MeshData &mesh)
+    bool mesh_reader(const std::string& file_name, t::MeshData &mesh)
     {
         std::ifstream file(file_name);
         if(file.is_open())
         {
             std::string line;
-            fvm_types::Node node;
-            fvm_types::DomainTriangle triangle;
-            fvm_types::Edge edge;
+            t::Node node;
+            t::DomainTriangle triangle;
+            t::Edge edge;
             int edges_and_domain_triangles_number;
             double i, a1, a2, a3, a4, a5, a6, a7, a8;
             while(std::getline(file, line))

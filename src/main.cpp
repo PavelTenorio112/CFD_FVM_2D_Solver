@@ -1,23 +1,38 @@
-#include "types.hpp"
-#include "mesh_reader.hpp"
-#include "mesh_geometric_processing.hpp"
-#include "mesh_data_printing.hpp"
+#include "include/geometric_preprocess/types.hpp"
+#include "include/geometric_preprocess/mesh_reader.hpp"
+#include "include/geometric_preprocess/mesh_geometric_preprocess.hpp"
+#include "include/geometric_preprocess/mesh_data_print.hpp"
+#include "include/setup/fields.hpp"
+#include "include/setup/initial_conditions.hpp"
+#include "include/setup/simulation_parameters_reader.hpp"
+#include "include/simulation_parameters.hpp"
+#include "include/inviscid_burgers.hpp"
 #include <iostream>
 #include <string>
+#include <fstream>
+
 int main()
 {
-    fvm_types::MeshData mesh;
-    std::string file_name = "input/Mesh.msh";
-    bool success = fvm_mesh_reader::mesh_reader_function(file_name, mesh);
+    t::MeshData mesh;
+    std::string file_name = "input/Mesh.mesh";
+    bool success = mr::mesh_reader(file_name, mesh);
     if(success != true)
     {
         std::cout<<"There was an error reading the mesh data."<<std::endl;
         return 1;
     }
-    
-    fvm_mesh_geometric_processing::mesh_geometric_processing_function(mesh);
+    mgp::mesh_geometric_preprocess(mesh);
+    mdp::mesh_data_print(mesh);
 
-    fvm_mesh_data_printing::mesh_data_printing_function(mesh);
+
+
+    fds::Fields fields;
+    ic::initial_conditions(mesh, fields);
+    sp::SimulationParameters simulation_parameters;
+    spr::simulation_parameters_reader(simulation_parameters);
+    ib::inviscid_burguers(mesh, fields, simulation_parameters);
+
+
 
     return 0;
 }

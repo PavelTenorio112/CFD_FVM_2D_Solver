@@ -1,4 +1,4 @@
-#include"mesh_data_printing.hpp"
+#include"include/geometric_preprocess/mesh_data_print.hpp"
 #include<iostream>
 #include<iomanip>
 #include<fstream>
@@ -8,11 +8,11 @@
 
 
 
-namespace fvm_mesh_data_printing
+namespace mdp
 {
     namespace
     {
-        void nodes_data_printing_function(fvm_types::MeshData &mesh)
+        void nodes_data_print(t::MeshData &mesh)
         {
             int i;
             std::ofstream NodesData("output/NodesData.txt");
@@ -41,7 +41,7 @@ namespace fvm_mesh_data_printing
             return;
         }
 
-        void edges_data_printing_function(fvm_types::MeshData &mesh)
+        void edges_data_print(t::MeshData &mesh)
         {
             int i;
             std::ofstream EdgesData("output/EdgesData.txt");
@@ -90,7 +90,7 @@ namespace fvm_mesh_data_printing
             return;
         }
 
-        void triangles_data_printing_function(fvm_types::MeshData &mesh)
+        void triangles_data_print(t::MeshData &mesh)
         {
             int i;
             std::ofstream TrianglesData("output/TrianglesData.txt");
@@ -169,7 +169,7 @@ namespace fvm_mesh_data_printing
             return;
         }
     
-        void ghost_triangles_data_printing_function(fvm_types::MeshData mesh)
+        void ghost_triangles_data_print(t::MeshData mesh)
         {
             int i;
             std::ofstream ghost_triangles_data("output/GhostTrianglesData.txt");
@@ -201,7 +201,7 @@ namespace fvm_mesh_data_printing
 
         }
 
-        void general_mesh_data_printing_function(fvm_types::MeshData &mesh)
+        void general_mesh_data_print(t::MeshData &mesh)
         {
             std::ofstream MeshData("output/MeshData.txt");
             if(MeshData.is_open())
@@ -220,15 +220,14 @@ namespace fvm_mesh_data_printing
             }
             return;
         }
-    
     }
-    void mesh_data_printing_function(fvm_types::MeshData &mesh)
+    void mesh_data_print(t::MeshData &mesh)
     {
-        nodes_data_printing_function(mesh);
-        edges_data_printing_function(mesh);
-        triangles_data_printing_function(mesh);
-        ghost_triangles_data_printing_function(mesh);
-        general_mesh_data_printing_function(mesh);
+        nodes_data_print(mesh);
+        edges_data_print(mesh);
+        triangles_data_print(mesh);
+        ghost_triangles_data_print(mesh);
+        general_mesh_data_print(mesh);
         return;
     }
 }
