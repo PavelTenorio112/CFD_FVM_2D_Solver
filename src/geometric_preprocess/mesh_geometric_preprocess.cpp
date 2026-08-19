@@ -20,8 +20,8 @@ namespace mgp
         void arrays_generation(t::MeshData& mesh)
         {
             mesh.nodes.resize(mesh.nodes_number);
-            mesh.domain_triangles.resize(mesh.domain_triangles_number);
             mesh.edges.resize(mesh.boundary_edges_number);
+            mesh.domain_triangles.resize(mesh.domain_triangles_number);
             int edge_node_0, edge_node_1, i;
             i = 0;
             for(auto it = mesh.nodes_list.begin(); it != mesh.nodes_list.end(); it++)
@@ -29,7 +29,7 @@ namespace mgp
                 mesh.nodes[i] = it -> second;
                 mesh.old_node_id_to_new_node_id_map[mesh.nodes[i].id] = i;
                 mesh.nodes[i].id = i;
-                i++;
+                ++i;
             }
             i = 0;
             for(auto it = mesh.boundary_edges_list.begin(); it != mesh.boundary_edges_list.end(); it++)
@@ -40,7 +40,7 @@ namespace mgp
                 edge_node_1 = mesh.edges[i].nodes_ids[1];
                 mesh.edges[i].nodes_ids[0] = std::min(mesh.old_node_id_to_new_node_id_map[edge_node_0], mesh.old_node_id_to_new_node_id_map[edge_node_1]);
                 mesh.edges[i].nodes_ids[1] = std::max(mesh.old_node_id_to_new_node_id_map[edge_node_0], mesh.old_node_id_to_new_node_id_map[edge_node_1]);
-                i++;
+                ++i;
             }
             i = 0;
             for(auto it = mesh.domain_triangles_list.begin(); it != mesh.domain_triangles_list.end(); it++)
@@ -50,7 +50,7 @@ namespace mgp
                 mesh.domain_triangles[i].nodes_ids[0] = mesh.old_node_id_to_new_node_id_map[mesh.domain_triangles[i].nodes_ids[0]];
                 mesh.domain_triangles[i].nodes_ids[1] = mesh.old_node_id_to_new_node_id_map[mesh.domain_triangles[i].nodes_ids[1]];
                 mesh.domain_triangles[i].nodes_ids[2] = mesh.old_node_id_to_new_node_id_map[mesh.domain_triangles[i].nodes_ids[2]];
-                i++;
+                ++i;
             }
             return;
         }
@@ -94,7 +94,7 @@ namespace mgp
         */
         void nodes_to_edge_mapping(t::MeshData& mesh)
         {
-            std::pair<int,int> nodes_pair;
+            std::pair <int, int> nodes_pair;
             int i;
             for(i=0; i<mesh.boundary_edges_number; i++)
             {
@@ -131,11 +131,16 @@ namespace mgp
         */
         void edges_to_triangles_assigning(t::MeshData& mesh)
         {
-            for(int i=0; i<mesh.domain_triangles_number; i++)
+            int i, node_0_id, node_1_id, node_2_id;
+            for(i=0; i<mesh.domain_triangles_number; i++)
             {
-                mesh.domain_triangles[i].edges_ids[0] = mesh.nodes_to_edge_map[{std::min(mesh.domain_triangles[i].nodes_ids[0], mesh.domain_triangles[i].nodes_ids[1]), std::max(mesh.domain_triangles[i].nodes_ids[0], mesh.domain_triangles[i].nodes_ids[1])}];
-                mesh.domain_triangles[i].edges_ids[1] = mesh.nodes_to_edge_map[{std::min(mesh.domain_triangles[i].nodes_ids[1], mesh.domain_triangles[i].nodes_ids[2]), std::max(mesh.domain_triangles[i].nodes_ids[1], mesh.domain_triangles[i].nodes_ids[2])}];
-                mesh.domain_triangles[i].edges_ids[2] = mesh.nodes_to_edge_map[{std::min(mesh.domain_triangles[i].nodes_ids[2], mesh.domain_triangles[i].nodes_ids[0]), std::max(mesh.domain_triangles[i].nodes_ids[2], mesh.domain_triangles[i].nodes_ids[0])}];
+                node_0_id = mesh.domain_triangles[i].nodes_ids[0];
+                node_1_id = mesh.domain_triangles[i].nodes_ids[1];
+                node_2_id = mesh.domain_triangles[i].nodes_ids[2];
+
+                mesh.domain_triangles[i].edges_ids[0] = mesh.nodes_to_edge_map[{std::min(node_0_id, node_1_id), std::max(node_0_id, node_1_id)}];
+                mesh.domain_triangles[i].edges_ids[1] = mesh.nodes_to_edge_map[{std::min(node_1_id, node_2_id), std::max(node_1_id, node_2_id)}];
+                mesh.domain_triangles[i].edges_ids[2] = mesh.nodes_to_edge_map[{std::min(node_2_id, node_0_id), std::max(node_2_id, node_0_id)}];
             }
             return;
         }
@@ -147,12 +152,13 @@ namespace mgp
         */
         void edge_to_triangles_mapping(t::MeshData& mesh)
         {
-            int i,j;
-            for(i=0; i<mesh.domain_triangles_number ;i++)
+            int i, j, edge_id;
+            for(i = 0; i < mesh.domain_triangles_number; ++i)
             {
                 for(j=0; j<3; j++)
                 {
-                    mesh.edge_to_triangles_map[mesh.domain_triangles[i].edges_ids[j]].push_back(mesh.domain_triangles[i].id);
+                    edge_id = mesh.domain_triangles[i].edges_ids[j];
+                    mesh.edge_to_triangles_map[edge_id].push_back(i);
                 }
             }
             return;   
@@ -278,6 +284,7 @@ namespace mgp
                 interior_triangle_id = mesh.edges[i].triangles_ids[0];
                 mesh.ghost_triangles[i].interior_triangle_id = interior_triangle_id;
                 mesh.ghost_triangles[i].type = mesh.edges[i].type;
+                mesh.ghost_triangles[i].boundary_edge_id = mesh.edges[i].id;
 
                 for(j=0; j<3; j++)
                 {
@@ -308,6 +315,7 @@ namespace mgp
                 triangle_id++;
             }
             mesh.ghost_triangles_number = mesh.boundary_edges_number;
+            mesh.triangles_number = mesh.ghost_triangles_number + mesh.domain_triangles_number;
             return;
         }
         

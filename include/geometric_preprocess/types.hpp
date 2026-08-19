@@ -40,6 +40,7 @@ namespace t
         int id;
         int type;
         int interior_triangle_id;
+        int boundary_edge_id;
         std::array <double, 2> centroid;
     };
     struct HashPair 
@@ -59,6 +60,7 @@ namespace t
         int boundary_edges_number;
         int domain_triangles_number;
         int ghost_triangles_number;
+        int triangles_number;
 
         std::vector <Node> nodes;
         std::vector <DomainTriangle> domain_triangles;

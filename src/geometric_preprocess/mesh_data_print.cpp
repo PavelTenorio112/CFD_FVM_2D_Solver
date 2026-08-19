@@ -12,10 +12,10 @@ namespace mdp
 {
     namespace
     {
-        void nodes_data_print(t::MeshData &mesh)
+        void nodes_data_print(t::MeshData& mesh)
         {
             int i;
-            std::ofstream NodesData("output/NodesData.txt");
+            std::ofstream NodesData("output/text/NodesData.txt");
             if(NodesData.is_open())
             {
                 NodesData << "NODES DATA\n"
@@ -41,10 +41,10 @@ namespace mdp
             return;
         }
 
-        void edges_data_print(t::MeshData &mesh)
+        void edges_data_print(t::MeshData& mesh)
         {
             int i;
-            std::ofstream EdgesData("output/EdgesData.txt");
+            std::ofstream EdgesData("output/text/EdgesData.txt");
             if(EdgesData.is_open())
             {
                 EdgesData << "EDGES DATA\n"
@@ -90,10 +90,10 @@ namespace mdp
             return;
         }
 
-        void triangles_data_print(t::MeshData &mesh)
+        void triangles_data_print(t::MeshData& mesh)
         {
             int i;
-            std::ofstream TrianglesData("output/TrianglesData.txt");
+            std::ofstream TrianglesData("output/text/TrianglesData.txt");
             if(TrianglesData.is_open())
             {
                 TrianglesData << "TRIANGLES DATA\n"
@@ -169,10 +169,10 @@ namespace mdp
             return;
         }
     
-        void ghost_triangles_data_print(t::MeshData mesh)
+        void ghost_triangles_data_print(t::MeshData& mesh)
         {
             int i;
-            std::ofstream ghost_triangles_data("output/GhostTrianglesData.txt");
+            std::ofstream ghost_triangles_data("output/text/GhostTrianglesData.txt");
             if(ghost_triangles_data.is_open())
             {
                 ghost_triangles_data << "GHOST TRIANGLES DATA" << "\n"
@@ -201,16 +201,16 @@ namespace mdp
 
         }
 
-        void general_mesh_data_print(t::MeshData &mesh)
+        void general_mesh_data_print(t::MeshData& mesh)
         {
-            std::ofstream MeshData("output/MeshData.txt");
+            std::ofstream MeshData("output/text/MeshData.txt");
             if(MeshData.is_open())
             {
                 MeshData << "MESH DATA" << "\n"
-                     << "Nodes Number: " << mesh.nodes_number << "\n"
-                     << "Edges Number: " << mesh.edges_number << "\n"
-                     << "Boundary Edges Number: " << mesh.boundary_edges_number << "\n"
-                     << "Domain Triangles Number: " << mesh.domain_triangles_number << "\n";
+                         << "Nodes Number: " << mesh.nodes_number << "\n"
+                         << "Edges Number: " << mesh.edges_number << "\n"
+                         << "Boundary Edges Number: " << mesh.boundary_edges_number << "\n"
+                         << "Domain Triangles Number: " << mesh.domain_triangles_number << "\n";
                 MeshData.close();
 
             }
@@ -221,7 +221,7 @@ namespace mdp
             return;
         }
     }
-    void mesh_data_print(t::MeshData &mesh)
+    void mesh_data_print(t::MeshData& mesh)
     {
         nodes_data_print(mesh);
         edges_data_print(mesh);

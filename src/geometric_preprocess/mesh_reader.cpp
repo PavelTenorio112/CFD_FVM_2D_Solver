@@ -1,5 +1,5 @@
 #include"include/geometric_preprocess/mesh_reader.hpp"
-#include"types.hpp"
+#include"include/geometric_preprocess/types.hpp"
 #include<string>
 #include<fstream>
 #include<limits>
@@ -19,64 +19,59 @@ namespace mr
 {
     bool mesh_reader(const std::string& file_name, t::MeshData &mesh)
     {
-        std::ifstream file(file_name);
-        if(file.is_open())
+        std::ifstream mesh_file(file_name);
+        if(mesh_file.is_open())
         {
-            std::string line;
             t::Node node;
-            t::DomainTriangle triangle;
             t::Edge edge;
-            int edges_and_domain_triangles_number;
-            double i, a1, a2, a3, a4, a5, a6, a7, a8;
-            while(std::getline(file, line))
+            t::DomainTriangle domain_triangle;
+            int i, boundary_edges_and_domain_triangles_number, id, element_type, garbage_int;
+            double garbage_double;
+            std::string object;
+
+            while(mesh_file >> object)
             {
-                if(line == "$Nodes")
+                if(object == "$Nodes")
                 {
-                    file >> mesh.nodes_number;
-                    for(i=1; i<= mesh.nodes_number; i++)
+                    mesh_file >> mesh.nodes_number;
+                    for(i = 0; i < mesh.nodes_number; ++i)
                     {
-                        file >> a1 >> node.position[0] >> node.position[1] >> a4;
-                        node.id=a1;
+                        mesh_file >> node.id >> node.position[0] >> node.position[1] >> garbage_double;
                         mesh.nodes_list[node.id] = node;
                     }
-                    file.ignore(std::numeric_limits<std::streamsize>::max(), '\n');/* Ignora el salto de linea */
                 }
-                else if(line=="$Elements")
+                if(object == "$Elements")
                 {
-                    file >> edges_and_domain_triangles_number;
-                    for(i=1; i<=edges_and_domain_triangles_number; i++)
+                    mesh_file >> boundary_edges_and_domain_triangles_number;
+                    for(i = 0; i < boundary_edges_and_domain_triangles_number; ++i)
                     {
-                        file>>a1>>a2;
-                        if(a2 == 1)
+                        mesh_file >> id >> element_type;
+                        if(element_type == 1)
                         {
-                            file >> a3 >> a4 >> a5 >> a6 >> a7;
-                            edge.id = a1;
-                            edge.type = a4;
-                            edge.nodes_ids[0] = std::min(a6,a7);
-                            edge.nodes_ids[1] = std::max(a6,a7);
+                            edge.id = id;
+                            mesh_file >> garbage_int >> edge.type >> garbage_int >> edge.nodes_ids[0] >> edge.nodes_ids[1];
                             mesh.boundary_edges_list[edge.id] = edge;
+
                         }
-                        else if(a2==2)
+                        else if(element_type == 2)
                         {
-                            file >> a3 >> a4 >> a5 >>a6>>a7>>a8;
-                            triangle.id=a1;
-                            triangle.nodes_ids[0]=a6;
-                            triangle.nodes_ids[1]=a7;
-                            triangle.nodes_ids[2]=a8;
-                            mesh.domain_triangles_list[triangle.id] = triangle;
+                            domain_triangle.id = id;
+                            mesh_file >> garbage_int >> garbage_int >> garbage_int >> domain_triangle.nodes_ids[0] >> domain_triangle.nodes_ids[1] >> domain_triangle.nodes_ids[2];
+                            mesh.domain_triangles_list[domain_triangle.id] = domain_triangle;
                         }
                     }
-                    file.ignore(std::numeric_limits<std::streamsize>::max(), '\n');/* Ignora el salto de linea*/
                 }
             }
+
             mesh.boundary_edges_number = mesh.boundary_edges_list.size();
             mesh.domain_triangles_number = mesh.domain_triangles_list.size();
-            file.close();
+            mesh_file.close();
             std::cout << "The mesh was read succesfully. " << std::endl;
             return true;
         }
         else
         {
+            std::cout << "There was an error reading mesh data. " << std::endl;
             return false;
         }
     }
