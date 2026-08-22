@@ -1,0 +1,12 @@
+BOUNDARY CONDITIONS
+inlet_vx(m/s): 1
+inlet_vy(m/s): 0
+
+SIMULATION PARAMETERS
+simulation_time(s): 15
+time_step(s): 0.001
+frames_per_second: 20
+
+
+
+

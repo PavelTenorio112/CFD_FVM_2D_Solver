@@ -4,13 +4,10 @@ bin/
 *.o
 *.obj
 
-input/
-*.msh
 *.geo
+*.msh
 
 output/
-*.geo
-*.msh
 *.txt
 !output/.gitkeep
 
