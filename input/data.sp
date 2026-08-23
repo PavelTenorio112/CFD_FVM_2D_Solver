@@ -7,8 +7,6 @@ simulation_time(s): 15
 CFL: 0.4
 frames_per_second: 20
 
-WRITE ".sp" instead of ".spformat"
-
 
 
 

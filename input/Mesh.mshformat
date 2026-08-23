@@ -1,3 +1,5 @@
+WRITE ".msh" instead of ".mshformat"
+
 $MeshFormat
 2.2 0 8
 $EndMeshFormat

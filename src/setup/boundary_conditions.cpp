@@ -8,7 +8,7 @@ namespace bc
     void boundary_conditions(t::MeshData& mesh, fds::Fields& fields, sp::SimulationParameters& simulation_parameters)
     {
         int i, j, type, inner_triangle_ID, neighbor_triangle_id;
-        double vix, viy, nijx, nijy;
+        double vix = 0.0, viy = 0.0, nijx = 0.0, nijy = 0.0;
         for(i = mesh.domain_triangles_number; i < mesh.triangles_number; ++i)
         {
             type = mesh.ghost_triangles[i - mesh.domain_triangles_number].type;

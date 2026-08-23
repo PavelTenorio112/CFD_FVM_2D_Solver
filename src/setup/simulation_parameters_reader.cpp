@@ -14,8 +14,8 @@ namespace spr
                                    >> garbage >> simulation_parameters.vx_inlet 
                                    >> garbage >> simulation_parameters.vy_inlet
                                    >> garbage >> garbage
-                                   >> garbage >> simulation_parameters.T
-                                   >> garbage >> simulation_parameters.dt
+                                   >> garbage >> simulation_parameters.total_simulation_time
+                                   >> garbage >> simulation_parameters.CFL
                                    >> garbage >> simulation_parameters.frames_per_second;
         return;
     }

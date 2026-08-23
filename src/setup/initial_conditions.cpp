@@ -15,10 +15,11 @@ namespace ic
         fields.edges_vx.reserve(mesh.edges_number);
         fields.edges_vy.reserve(mesh.edges_number);
 
+        //Quiescent initial condition
         for(i=0; i<mesh.domain_triangles_number; ++i) 
         {
-            fields.triangles_centroids_vx_before[i] = 0;
-            fields.triangles_centroids_vy_before[i] = 0;
+            fields.triangles_centroids_vx_before[i] = 0.0;
+            fields.triangles_centroids_vy_before[i] = 0.0;
         }
         return;
     }

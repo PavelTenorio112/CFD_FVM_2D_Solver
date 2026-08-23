@@ -29,7 +29,5 @@ int main()
     ic::initial_conditions(mesh, fields);
     ib::inviscid_burguers(mesh, fields, simulation_parameters);
 
-
-
     return 0;
 }
