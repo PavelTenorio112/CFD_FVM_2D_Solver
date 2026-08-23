@@ -11,7 +11,7 @@ namespace tsc
         int i;
         double last_minimum_dt, new_minimum_dt, l1, l2, l3, area, vx, vy, v, CFL, maximum_allowed_dt;
         CFL = simulation_parameters.CFL;
-        maximum_allowed_dt = 0.02;
+        maximum_allowed_dt = simulation_parameters.maximum_time_step;
 
         last_minimum_dt = std::numeric_limits<double>::max();
         for(i = 0; i < mesh.domain_triangles_number; ++i)

@@ -3,6 +3,6 @@ namespace sp
 {
     struct SimulationParameters
     {
-        double vx_inlet, vy_inlet, CFL, total_simulation_time, frames_per_second;
+        double vx_inlet, vy_inlet, CFL, total_simulation_time, frames_per_second, maximum_time_step;
     };
 }

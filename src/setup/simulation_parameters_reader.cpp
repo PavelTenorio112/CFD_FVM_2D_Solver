@@ -16,6 +16,7 @@ namespace spr
                                    >> garbage >> garbage
                                    >> garbage >> simulation_parameters.total_simulation_time
                                    >> garbage >> simulation_parameters.CFL
+                                   >> garbage >> simulation_parameters.maximum_time_step
                                    >> garbage >> simulation_parameters.frames_per_second;
         return;
     }
