@@ -9,7 +9,7 @@
 
 namespace fdp
 {
-    void fields_data_print(t::MeshData& mesh, fds::Fields& fields, int frame_number)
+    void fields_data_print(t::MeshInfo& mesh_info, t::Nodes& nodes, t::DomainTriangles& domain_triangles, f::Fields& fields, int frame_number)
     {
         int i;
         std::string file_number;
@@ -24,15 +24,15 @@ namespace fdp
                 paraview_fields_file << "<?xml version=\"1.0\"?>\n"
                                      << "<VTKFile type=\"UnstructuredGrid\" version=\"0.1\" byte_order=\"LittleEndian\">\n"
                                      << "  <UnstructuredGrid>\n"
-                                     << "    <Piece NumberOfPoints=\"" << mesh.nodes_number << "\" NumberOfCells=\"" << mesh.domain_triangles_number << "\">\n";
+                                     << "    <Piece NumberOfPoints=\"" << mesh_info.nodes_number << "\" NumberOfCells=\"" << mesh_info.domain_triangles_number << "\">\n";
 
                 paraview_fields_file << "      <Points>\n"
                                      << "        <DataArray type=\"Float64\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">\n"
                                      << "          ";
 
-            for (i = 0; i < mesh.nodes_number; ++i)
+            for (i = 0; i < mesh_info.nodes_number; ++i)
             {
-                paraview_fields_file << mesh.nodes[i].position[0] << " " << mesh.nodes[i].position[1] << " 0 ";
+                paraview_fields_file << nodes.positions[i][0] << " " << nodes.positions[i][1] << " 0 ";
             }
 
                 paraview_fields_file << "\n        </DataArray>\n"
@@ -42,18 +42,18 @@ namespace fdp
                                      << "        <DataArray type=\"Int32\" Name=\"connectivity\" format=\"ascii\">\n"
                                      << "          ";
 
-            for (i = 0; i < mesh.domain_triangles_number; ++i)
+            for (i = 0; i < mesh_info.domain_triangles_number; ++i)
             {
-                paraview_fields_file << mesh.domain_triangles[i].nodes_ids[0] << " "
-                                     << mesh.domain_triangles[i].nodes_ids[1] << " "
-                                     << mesh.domain_triangles[i].nodes_ids[2] << " ";
+                paraview_fields_file << domain_triangles.nodes_IDs[i][0] << " "
+                                     << domain_triangles.nodes_IDs[i][1] << " "
+                                     << domain_triangles.nodes_IDs[i][2] << " ";
             }
 
                 paraview_fields_file << "\n        </DataArray>\n"
                                      << "        <DataArray type=\"Int32\" Name=\"offsets\" format=\"ascii\">\n"
                                      << "          ";
 
-            for (i = 0; i < mesh.domain_triangles_number; ++i) {
+            for (i = 0; i < mesh_info.domain_triangles_number; ++i) {
                 paraview_fields_file << (i + 1) * 3 << " ";
             }
 
@@ -61,7 +61,7 @@ namespace fdp
                                      << "        <DataArray type=\"UInt8\" Name=\"types\" format=\"ascii\">\n"
                                      << "          ";
 
-            for (i = 0; i < mesh.domain_triangles_number; ++i)
+            for (i = 0; i < mesh_info.domain_triangles_number; ++i)
             {
                 paraview_fields_file << 5 << " ";
             }
@@ -73,10 +73,10 @@ namespace fdp
                                      << "        <DataArray type=\"Float64\" Name=\"Velocity\" NumberOfComponents=\"3\" format=\"ascii\">\n"
                                      << "          ";
 
-            for (i = 0; i < mesh.domain_triangles_number; ++i) 
+            for (i = 0; i < mesh_info.domain_triangles_number; ++i)
             {
-                paraview_fields_file << fields.triangles_centroids_vx_before[i] << " "
-                                     << fields.triangles_centroids_vy_before[i] << " 0 ";
+                paraview_fields_file << fields.domain_triangles_centroids_velocities_before[i][0] << " "
+                                     << fields.domain_triangles_centroids_velocities_before[i][1] << " 0 ";
             }
 
                 paraview_fields_file << "\n        </DataArray>\n"

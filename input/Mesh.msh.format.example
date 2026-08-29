@@ -1,4 +1,4 @@
-WRITE ".msh" instead of ".mshformatexample"
+WRITE ".msh" instead of ".msh.format.example"
 
 $MeshFormat
 2.2 0 8

@@ -4,5 +4,5 @@
 
 namespace ic
 {
-    void initial_conditions(t::MeshData &mesh, fds::Fields &fields);
+    void initial_conditions(t::MeshInfo &mesh_info, f::Fields &fields);
 }

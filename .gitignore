@@ -6,11 +6,10 @@ bin/
 
 *.geo
 *.msh
+*.sp
 
 output/
-*.txt
-!output/.gitkeep
-
+hidden/
 *.aux
 *.log
 *.out

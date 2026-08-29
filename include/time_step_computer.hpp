@@ -4,5 +4,5 @@
 #include"include/setup/fields.hpp"
 namespace tsc
 {
-    double time_step_computer(t::MeshData &mesh, fds::Fields &fields, sp::SimulationParameters &simulation_parameters);
+    double time_step_computer(t::MeshInfo& mesh_info, t::Edges& edges, t::DomainTriangles& domain_triangles, f::Fields &fields, sp::SimulationParameters &simulation_parameters);
 }

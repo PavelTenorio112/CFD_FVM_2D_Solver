@@ -4,22 +4,18 @@
 
 namespace ic
 {
-    void initial_conditions(t::MeshData &mesh, fds::Fields &fields)
+    void initial_conditions(t::MeshInfo &mesh_info, f::Fields &fields)
     {
-        int i;
-        fields.triangles_centroids_vx_before.reserve(mesh.triangles_number);
-        fields.triangles_centroids_vx_after.reserve(mesh.triangles_number);
-        fields.triangles_centroids_vy_before.reserve(mesh.triangles_number);
-        fields.triangles_centroids_vy_after.reserve(mesh.triangles_number);
-
-        fields.edges_vx.reserve(mesh.edges_number);
-        fields.edges_vy.reserve(mesh.edges_number);
+        fields.domain_triangles_centroids_velocities_before.resize(mesh_info.triangles_number);
+        fields.domain_triangles_centroids_velocities_after.resize(mesh_info.triangles_number);
+        
+        fields.edges_midpoints_velocities.resize(mesh_info.edges_number);
 
         //Quiescent initial condition
-        for(i=0; i<mesh.domain_triangles_number; ++i) 
+        for(int i = 0; i < mesh_info.domain_triangles_number; ++i) 
         {
-            fields.triangles_centroids_vx_before[i] = 0.0;
-            fields.triangles_centroids_vy_before[i] = 0.0;
+            fields.domain_triangles_centroids_velocities_before[i][0] = 0.0;
+            fields.domain_triangles_centroids_velocities_before[i][1] = 0.0;
         }
         return;
     }

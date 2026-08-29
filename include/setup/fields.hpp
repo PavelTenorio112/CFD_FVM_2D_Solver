@@ -1,16 +1,12 @@
 #pragma once
-#include"include/geometric_preprocess/types.hpp"
-
-namespace fds
+#include<vector>
+#include<array>
+namespace f
 {
     struct Fields
     {
-        std::vector <double> triangles_centroids_vx_before;
-        std::vector <double> triangles_centroids_vy_before;
-        std::vector <double> triangles_centroids_vx_after;
-        std::vector <double> triangles_centroids_vy_after;
-
-        std::vector <double> edges_vx;
-        std::vector <double> edges_vy;
+        std::vector <std::array<double, 2> > domain_triangles_centroids_velocities_before;
+        std::vector <std::array<double, 2> > domain_triangles_centroids_velocities_after;
+        std::vector <std::array<double, 2> >  edges_midpoints_velocities;
     };
 }

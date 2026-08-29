@@ -4,11 +4,11 @@ inlet_vy(m/s): 0
 
 SIMULATION PARAMETERS
 simulation_time(s): 15
-CFL: 0.4
-maximum_time_step(s): 0.05
+time_step: 0.4
 frames_per_second: 20
 
-WRITE ".sp" instead of ".spformatexample"
+
+WRITE ".sp" instead of ".sp.format.example"
 
 
 
