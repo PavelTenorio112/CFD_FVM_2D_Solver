@@ -9,9 +9,12 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <chrono>
 
 int main()
 {
+    //auto start = std::chrono::high_resolution_clock::now();
+
     t::MeshInfo mesh_info;
     t::MeshMaps mesh_maps;
     t::MeshReadingTools mesh_reading_tools;
@@ -35,6 +38,10 @@ int main()
     sp::SimulationParameters simulation_parameters;
     spr::simulation_parameters_reader(simulation_parameters);
     ib::inviscid_burguers(mesh_info, nodes, edges, domain_triangles, ghost_triangles, fields, simulation_parameters);
+
+    //auto end = std::chrono::high_resolution_clock::now();
+    //std::chrono::duration<double> seconds = end - start;
+    //std::cout << seconds.count() <<"  s.\n" <<std::endl;
 
     return 0;
 }

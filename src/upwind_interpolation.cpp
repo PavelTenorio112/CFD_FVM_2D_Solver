@@ -9,19 +9,19 @@ namespace ui
     {
         for(int i = 0; i < mesh_info.domain_triangles_number; ++i)
         {
-            double vix = fields.domain_triangles_centroids_velocities_before[i][0];
-            double viy = fields.domain_triangles_centroids_velocities_before[i][1];
+            double vix = fields.triangles_centroids_velocities_before[i][0],
+                   viy = fields.triangles_centroids_velocities_before[i][1];
 
             for(int j = 0; j < 3; ++j)
             {
-                int edge_ID = domain_triangles.edges_IDs[i][j];
-                int neighbor_triangle_ID = domain_triangles.neighbor_triangles_IDs[i][j];
-                int type = edges.types[edge_ID];
+                int edge_ID = domain_triangles.edges_IDs[i][j],
+                    neighbor_triangle_ID = domain_triangles.neighbor_triangles_IDs[i][j],
+                    type = edges.types[edge_ID];
 
-                auto[vkx, vky] = fields.domain_triangles_centroids_velocities_before[neighbor_triangle_ID];
+                auto[vkx, vky] = fields.triangles_centroids_velocities_before[neighbor_triangle_ID];
 
-                double vx_average = (vix + vkx) / 2;
-                double vy_average = (viy + vky) / 2;
+                double vx_average = (vix + vkx) / 2,
+                       vy_average = (viy + vky) / 2;
 
                 if(type == 1 or type == 2 or type == 3)
                 {
@@ -30,10 +30,9 @@ namespace ui
                 }
                 else
                 {
-                    double nijx = domain_triangles.unit_normal_vectors[i][j][0];
-                    double nijy = domain_triangles.unit_normal_vectors[i][j][1];
-
-                    double average_velocity_flux = (vx_average * nijx) + (vy_average * nijy);
+                    double nijx = domain_triangles.unit_normal_vectors[i][j][0],
+                           nijy = domain_triangles.unit_normal_vectors[i][j][1],
+                           average_velocity_flux = (vx_average * nijx) + (vy_average * nijy);
 
                     if(average_velocity_flux >= 0)
                     {

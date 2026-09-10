@@ -48,12 +48,11 @@ namespace mgp
         */
         void arrays_generation(t::MeshMaps &mesh_maps, t::MeshReadingTools &mesh_reading_tools, t::Nodes &nodes,t::Edges &edges, t::DomainTriangles &domain_triangles)
         {
-            int i;
-            i = 0;
+            int i = 0;
             while(!mesh_reading_tools.nodes_read_queue.empty())
             {
-                double x = mesh_reading_tools.nodes_read_queue.front().x;
-                double y = mesh_reading_tools.nodes_read_queue.front().y;
+                double x = mesh_reading_tools.nodes_read_queue.front().x,
+                       y = mesh_reading_tools.nodes_read_queue.front().y;
                 int old_node_ID = mesh_reading_tools.nodes_read_queue.front().ID;
 
                 nodes.positions[i][0] = x;
@@ -66,11 +65,11 @@ namespace mgp
             i = 0;
             while(!mesh_reading_tools.boundary_edges_read_queue.empty())
             {
-                int old_boundary_edge_node_0 = mesh_reading_tools.boundary_edges_read_queue.front().node_0_ID;
-                int old_boundary_edge_node_1 = mesh_reading_tools.boundary_edges_read_queue.front().node_1_ID;
-                int boundary_edge_type = mesh_reading_tools.boundary_edges_read_queue.front().type;
-                int new_boundary_edge_node_0 = mesh_maps.old_node_id_to_new_node_id_map[old_boundary_edge_node_0];
-                int new_boundary_edge_node_1 = mesh_maps.old_node_id_to_new_node_id_map[old_boundary_edge_node_1];
+                int old_boundary_edge_node_0 = mesh_reading_tools.boundary_edges_read_queue.front().node_0_ID,
+                    old_boundary_edge_node_1 = mesh_reading_tools.boundary_edges_read_queue.front().node_1_ID,
+                    boundary_edge_type = mesh_reading_tools.boundary_edges_read_queue.front().type,
+                    new_boundary_edge_node_0 = mesh_maps.old_node_id_to_new_node_id_map[old_boundary_edge_node_0],
+                    new_boundary_edge_node_1 = mesh_maps.old_node_id_to_new_node_id_map[old_boundary_edge_node_1];
 
                 edges.nodes_IDs[i][0] = std::min(new_boundary_edge_node_0, new_boundary_edge_node_1);
                 edges.nodes_IDs[i][1] = std::max(new_boundary_edge_node_0, new_boundary_edge_node_1);
@@ -82,12 +81,12 @@ namespace mgp
             i = 0;
             while(!mesh_reading_tools.domain_triangles_read_queue.empty())
             {
-                int old_domain_triangle_node_0_ID = mesh_reading_tools.domain_triangles_read_queue.front().node_0_ID;
-                int old_domain_triangle_node_1_ID = mesh_reading_tools.domain_triangles_read_queue.front().node_1_ID;
-                int old_domain_triangle_node_2_ID = mesh_reading_tools.domain_triangles_read_queue.front().node_2_ID;
-                int new_domain_triangle_node_0_ID = mesh_maps.old_node_id_to_new_node_id_map[old_domain_triangle_node_0_ID];
-                int new_domain_triangle_node_1_ID = mesh_maps.old_node_id_to_new_node_id_map[old_domain_triangle_node_1_ID];
-                int new_domain_triangle_node_2_ID = mesh_maps.old_node_id_to_new_node_id_map[old_domain_triangle_node_2_ID];
+                int old_domain_triangle_node_0_ID = mesh_reading_tools.domain_triangles_read_queue.front().node_0_ID,
+                    old_domain_triangle_node_1_ID = mesh_reading_tools.domain_triangles_read_queue.front().node_1_ID,
+                    old_domain_triangle_node_2_ID = mesh_reading_tools.domain_triangles_read_queue.front().node_2_ID,
+                    new_domain_triangle_node_0_ID = mesh_maps.old_node_id_to_new_node_id_map[old_domain_triangle_node_0_ID],
+                    new_domain_triangle_node_1_ID = mesh_maps.old_node_id_to_new_node_id_map[old_domain_triangle_node_1_ID],
+                    new_domain_triangle_node_2_ID = mesh_maps.old_node_id_to_new_node_id_map[old_domain_triangle_node_2_ID];
                 domain_triangles.nodes_IDs[i][0] = new_domain_triangle_node_0_ID;
                 domain_triangles.nodes_IDs[i][1] = new_domain_triangle_node_1_ID;
                 domain_triangles.nodes_IDs[i][2] = new_domain_triangle_node_2_ID;
@@ -233,8 +232,8 @@ namespace mgp
             }
             for(int i = mesh_info.boundary_edges_number; i < mesh_info.edges_number; ++i)
             {
-                int triangle_0_ID = mesh_maps.edge_to_triangles_map[i][0];
-                int triangle_1_ID = mesh_maps.edge_to_triangles_map[i][1];
+                int triangle_0_ID = mesh_maps.edge_to_triangles_map[i][0],
+                    triangle_1_ID = mesh_maps.edge_to_triangles_map[i][1];
 
                 edges.triangles_IDs[i][0] = std::min(triangle_0_ID, triangle_1_ID);
                 edges.triangles_IDs[i][1] = std::max(triangle_0_ID, triangle_1_ID);
@@ -298,9 +297,9 @@ namespace mgp
                 auto [x1, y1] = nodes.positions[node_1_ID];
                 auto [x2, y2] = nodes.positions[node_2_ID];
 
-                double l0 = edges.lengths[edge_0_ID];
-                double l1 = edges.lengths[edge_1_ID];
-                double l2 = edges.lengths[edge_2_ID];
+                double l0 = edges.lengths[edge_0_ID],
+                       l1 = edges.lengths[edge_1_ID],
+                       l2 = edges.lengths[edge_2_ID];
 
                 domain_triangles.centroids[i][0] = (x0 + x1 + x2) / 3;
                 domain_triangles.centroids[i][1] = (y0 + y1 + y2) / 3;
@@ -314,10 +313,10 @@ namespace mgp
 
                 domain_triangles.from_self_centroid_to_edges_midpoints_vectors[i][0][0] = edges.middle_points[edge_0_ID][0] - domain_triangles.centroids[i][0];
                 domain_triangles.from_self_centroid_to_edges_midpoints_vectors[i][0][1] = edges.middle_points[edge_0_ID][1] - domain_triangles.centroids[i][1];
-                domain_triangles.from_self_centroid_to_edges_midpoints_vectors[i][1][0] = edges.middle_points[edge_0_ID][0] - domain_triangles.centroids[i][0];
-                domain_triangles.from_self_centroid_to_edges_midpoints_vectors[i][1][1] = edges.middle_points[edge_0_ID][1] - domain_triangles.centroids[i][1];
-                domain_triangles.from_self_centroid_to_edges_midpoints_vectors[i][2][0] = edges.middle_points[edge_0_ID][0] - domain_triangles.centroids[i][0];
-                domain_triangles.from_self_centroid_to_edges_midpoints_vectors[i][2][1] = edges.middle_points[edge_0_ID][1] - domain_triangles.centroids[i][1];
+                domain_triangles.from_self_centroid_to_edges_midpoints_vectors[i][1][0] = edges.middle_points[edge_1_ID][0] - domain_triangles.centroids[i][0];
+                domain_triangles.from_self_centroid_to_edges_midpoints_vectors[i][1][1] = edges.middle_points[edge_1_ID][1] - domain_triangles.centroids[i][1];
+                domain_triangles.from_self_centroid_to_edges_midpoints_vectors[i][2][0] = edges.middle_points[edge_2_ID][0] - domain_triangles.centroids[i][0];
+                domain_triangles.from_self_centroid_to_edges_midpoints_vectors[i][2][1] = edges.middle_points[edge_2_ID][1] - domain_triangles.centroids[i][1];
             }
             return;
         }
@@ -329,14 +328,20 @@ namespace mgp
         void ghost_cells_creation(t::MeshInfo& mesh_info, t::Edges& edges, t::DomainTriangles& domain_triangles, t::GhostTriangles& ghost_triangles)
         {   
             int triangle_ID = mesh_info.domain_triangles_number;
-            double r0x = 0, r0y = 0, n0x = 0, n0y = 0, n1x = 0, n1y = 0, r1x, r1y, Det, DetX, DetY;
+            double r0x = 0.0, 
+                   r0y = 0.0, 
+                   n0x = 0.0, 
+                   n0y = 0.0, 
+                   n1x = 0.0, 
+                   n1y = 0.0, 
+                   r1x, r1y, Det, DetX, DetY;
 
             for(int i = 0; i < mesh_info.boundary_edges_number; ++i)
             {
                 int inner_domain_triangle_ID = edges.triangles_IDs[i][0];
                 ghost_triangles.IDs[i] = triangle_ID;
                 edges.triangles_IDs[i][1] = triangle_ID;
-                ghost_triangles.inner_triangles_IDs[i] = edges.triangles_IDs[i][0];
+                ghost_triangles.inner_triangles_IDs[i] = inner_domain_triangle_ID;
                 ghost_triangles.types[i] = edges.types[i];
                 ghost_triangles.boundary_edges_IDs[i] = i;
 
@@ -399,13 +404,15 @@ namespace mgp
         */
         void properties_computing_4(t::MeshInfo& mesh_info, t::Edges& edges, t::DomainTriangles& domain_triangles, t::GhostTriangles& ghost_triangles)
         {
-            double delta_x, delta_y;
             for(int i = 0; i < mesh_info.domain_triangles_number; ++i)
             {
                 for(int j = 0; j < 3; ++j)
                 {
-                    int edge_ID = domain_triangles.edges_IDs[i][j];
-                    int neighbor_triangle_ID = domain_triangles.neighbor_triangles_IDs[i][j];
+                    int edge_ID = domain_triangles.edges_IDs[i][j],
+                        neighbor_triangle_ID = domain_triangles.neighbor_triangles_IDs[i][j];
+                    double delta_x = 0.0,
+                           delta_y = 0.0;
+
                     if(edges.types[edge_ID] == 0)
                     {
                         delta_x = domain_triangles.centroids[neighbor_triangle_ID][0] - domain_triangles.centroids[i][0];
@@ -438,9 +445,9 @@ namespace mgp
 
 
 
-                double distance_0 = std::sqrt(delta_0_x * delta_0_x + delta_0_y * delta_0_y);
-                double distance_1 = std::sqrt(delta_1_x * delta_1_x + delta_1_y * delta_1_y);
-                double distance_2 = std::sqrt(delta_2_x * delta_2_x + delta_2_y * delta_2_y);
+                double distance_0 = std::sqrt(delta_0_x * delta_0_x + delta_0_y * delta_0_y),
+                       distance_1 = std::sqrt(delta_1_x * delta_1_x + delta_1_y * delta_1_y),
+                       distance_2 = std::sqrt(delta_2_x * delta_2_x + delta_2_y * delta_2_y);
 
                 if(edges.triangles_IDs[edge_0_ID][0] == i)
                 {
@@ -486,10 +493,8 @@ namespace mgp
             {
                 auto [l0, l1] = edges.distances_from_midpoint_to_triangles_centroids[i];
 
-                double l = l0 + l1;
-
-                edges.geometric_weights[i][0] = l1 / l;
-                edges.geometric_weights[i][1] = l0 / l;
+                edges.geometric_weights[i][0] = l1 / (l0 + l1);
+                edges.geometric_weights[i][1] = l0 / (l0 + l1);
             }
             return;
         }

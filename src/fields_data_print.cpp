@@ -75,8 +75,8 @@ namespace fdp
 
             for (i = 0; i < mesh_info.domain_triangles_number; ++i)
             {
-                paraview_fields_file << fields.domain_triangles_centroids_velocities_before[i][0] << " "
-                                     << fields.domain_triangles_centroids_velocities_before[i][1] << " 0 ";
+                paraview_fields_file << fields.triangles_centroids_velocities_before[i][0] << " "
+                                     << fields.triangles_centroids_velocities_before[i][1] << " 0 ";
             }
 
                 paraview_fields_file << "\n        </DataArray>\n"

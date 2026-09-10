@@ -1,11 +1,14 @@
 BOUNDARY CONDITIONS
-inlet_vx(m/s): 1
-inlet_vy(m/s): 0
+inlet_vx(m/s): 1.0
+inlet_vy(m/s): 0.0
 
 SIMULATION PARAMETERS
-simulation_time(s): 15
-time_step: 0.4
+simulation_time(s): 15.0
+time_step: 0.005
 frames_per_second: 20
+
+PHYSICAL PARAMETERS
+kinematic_viscosity: 0.00001
 
 
 WRITE ".sp" instead of ".sp.format.example"

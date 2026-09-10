@@ -1,6 +1,6 @@
 ## INTRODUCTION
 
-This is a program for 2D computational fluid dynamics (CFD) to numerically solve the Navier - Stokes equations. This version just computes the advective part using a first order upwind interpolation scheme and does not guarantee mass conservation.
+This is a program for 2D computational fluid dynamics (CFD) to numerically solve the Navier - Stokes equations. This version just computes the advective and viscous part and does not guarantee mass conservation.
 
 ---
 
@@ -34,25 +34,38 @@ Moreover, you need to put the basic simulation parameters in the file `data.sp`.
 
 ```text
 Geometric Preprocessor/
-├── build/                
-├── docs/                 # Documentation and theoretical notes
-├── include/              
-│   ├── mesh_data_printing.hpp
-│   ├── mesh_geometric_processing.hpp
-│   ├── mesh_reader.hpp
-│   └── types.hpp
-├── input/                # Place your Mesh.msh and the data.sp
-├── output/               # Computed geometric results (.txt files)
-├── src/                  
+├── build/
+├── docs/                                    # Documentation and theoretical notes
+├── include/
+│   ├── geometric_preprocess/
+│   │   ├── mesh_data_print.hpp
+│   │   ├── mesh_geometric_preprocess.hpp
+│   │   ├── mesh_reader.hpp
+│   │   └── types.hpp
+│   ├── setup/
+│   │   ├── fields.hpp
+│   │   ├── gradient_boundary_conditions.hpp
+│   │   ├── initial_conditions.hpp
+│   │   ├── simulation_parameters_reader.hpp
+│   │   └── velocity_boundary_conditions.hpp
+│   ├── fields_data_print.hpp
+│   ├── inviscid_burgers.hpp
+│   ├── least_squares_gradient_construction.hpp
+│   ├── simulation_parameters.hpp
+│   ├── time_step_computer.hpp
+│   ├── upwind_interpolation.hpp
+│   └── weights_based_linear_interpolation_for_gradients.hpp
+├── input/                                   # Place your Mesh.msh and the data.sp
+├── output/                                  # Computed geometric results (.txt files) and .vtu
+├── src/
 │   ├── main.cpp
 │   ├── mesh_data_printing.cpp
 │   ├── mesh_geometric_processing.cpp
 │   └── mesh_reader.cpp
 ├── .gitignore
-├── CMakeLists.txt        
+├── CMakeLists.txt
 └── README.md
 ```
-
 ---
 
 ## COMPILATION AND RUNNING
@@ -74,4 +87,4 @@ cmake --build build
 This program will give you a set of `.vtu` files capable of being reproduced as a video in Paraview. These are some pictures as proof of it:
 
 ![Advective flux around a circle: ](assets/Circle_Advective_Flux.png)
-![Advective flux trough a square: ](assets/Square_Advective_Flux.png)
+![Viscous flux trough a circle: ](assets/Circle_Viscous_Flux.png)

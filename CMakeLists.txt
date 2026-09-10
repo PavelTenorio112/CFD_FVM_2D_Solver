@@ -13,13 +13,16 @@ add_executable(Geometric_Preprocessor_Executable
     src/geometric_preprocess/mesh_reader.cpp
     src/geometric_preprocess/mesh_geometric_preprocess.cpp
     src/geometric_preprocess/mesh_data_print.cpp
-    src/setup/boundary_conditions.cpp
+    src/setup/velocity_boundary_conditions.cpp
+    src/setup/gradient_boundary_conditions.cpp
     src/setup/initial_conditions.cpp
     src/setup/simulation_parameters_reader.cpp
     src/fields_data_print.cpp
     src/inviscid_burgers.cpp
     src/main.cpp
     src/upwind_interpolation.cpp
+    src/least_squares_gradient_construction.cpp
+    src/weights_based_linear_interpolation_for_gradient.cpp
 )
 
 target_include_directories(Geometric_Preprocessor_Executable PRIVATE
