@@ -36,6 +36,11 @@ else()
     target_compile_options(Geometric_Preprocessor_Executable PRIVATE -Wall -Wextra -Wpedantic -Werror)
 endif()
 
+find_package(OpenMP REQUIRED)
+
+if(OpenMP_CXX_FOUND)
+    target_link_libraries(Geometric_Preprocessor_Executable PRIVATE OpenMP::OpenMP_CXX)
+endif()
 
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")

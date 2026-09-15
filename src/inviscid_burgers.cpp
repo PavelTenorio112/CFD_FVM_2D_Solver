@@ -1,14 +1,12 @@
 #include"include/inviscid_burgers.hpp"
 #include"include/geometric_preprocess/types.hpp"
 #include"include/setup/fields.hpp"
-#include"include/setup/velocity_boundary_conditions.hpp"
+#include "include/setup/conditions.hpp"
 #include"include/setup/simulation_parameters_reader.hpp"
 #include"include/simulation_parameters.hpp"
 #include"include/upwind_interpolation.hpp"
-#include "include/setup/initial_conditions.hpp"
 #include"include/fields_data_print.hpp"
 #include"include/least_squares_gradient_construction.hpp"
-#include"include/setup/gradient_boundary_conditions.hpp"
 #include"include/weights_based_linear_interpolation_for_gradient.hpp"
 #include <iostream>
 #include <fstream>
@@ -28,7 +26,7 @@ namespace ib
                simulation_dt = simulation_parameters.time_step,
                kinematic_viscosity = simulation_parameters.kinematic_viscosity;
         
-        ic::initial_conditions(mesh_info, fields);
+        c::initial_conditions(mesh_info, fields);
 
         std::filesystem::path output_direction = "output/paraview";
         std::filesystem::create_directories(output_direction);
@@ -37,10 +35,10 @@ namespace ib
 
         while(time_accumulator < simulation_parameters.total_simulation_time)
         {   
-            vbc::velocity_boundary_conditions(mesh_info, domain_triangles, ghost_triangles, fields, simulation_parameters);
+            c::velocity_boundary_conditions(mesh_info, domain_triangles, ghost_triangles, fields, simulation_parameters);
             lsgc::least_squares_gradient_construction(mesh_info, domain_triangles, fields);
             ui::upwind_interpolation(mesh_info, edges, domain_triangles, fields);
-            gbc::gradient_boundary_conditions(mesh_info, domain_triangles, ghost_triangles, fields);
+            c::gradient_boundary_conditions(mesh_info, domain_triangles, ghost_triangles, fields);
             wblifg::weights_based_linear_interpolation_for_gradients(mesh_info, edges, fields);
 
             for(int i = 0; i < mesh_info.domain_triangles_number; ++i)
@@ -71,7 +69,6 @@ namespace ib
                           - (vxijn * nxij + vyijn * nyij) * vyijn * lij
                           + kinematic_viscosity * (Dxvyij * nxij + Dyvyij * nyij) * lij;
                 }
-
                 fields.triangles_centroids_velocities_after[i][0] = fields.triangles_centroids_velocities_before[i][0] + (simulation_dt / area) * sum_x;
                 fields.triangles_centroids_velocities_after[i][1] = fields.triangles_centroids_velocities_before[i][1] + (simulation_dt / area) * sum_y;
             }

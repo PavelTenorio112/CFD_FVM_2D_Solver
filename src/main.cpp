@@ -13,7 +13,7 @@
 
 int main()
 {
-    //auto start = std::chrono::high_resolution_clock::now();
+    auto start = std::chrono::high_resolution_clock::now();
 
     t::MeshInfo mesh_info;
     t::MeshMaps mesh_maps;
@@ -39,9 +39,10 @@ int main()
     spr::simulation_parameters_reader(simulation_parameters);
     ib::inviscid_burguers(mesh_info, nodes, edges, domain_triangles, ghost_triangles, fields, simulation_parameters);
 
-    //auto end = std::chrono::high_resolution_clock::now();
-    //std::chrono::duration<double> seconds = end - start;
-    //std::cout << seconds.count() <<"  s.\n" <<std::endl;
-
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> seconds = end - start;
+    std::cout << seconds.count() <<"  s.\n" <<std::endl;
+/*antes de meter el reordenamiento: 12.813  s, para una malla de 70072 elementos
+*/
     return 0;
 }

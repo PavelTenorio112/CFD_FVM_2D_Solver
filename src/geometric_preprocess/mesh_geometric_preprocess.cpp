@@ -15,7 +15,6 @@ namespace mgp
     {
         void memory_reserver(t::MeshInfo &mesh_info,t::Nodes &nodes, t::Edges &edges, t::DomainTriangles &domain_triangles, t::GhostTriangles &ghost_triangles)
         {
-
             nodes.positions.resize(mesh_info.nodes_number);
 
             edges.types.resize(mesh_info.boundary_edges_number);

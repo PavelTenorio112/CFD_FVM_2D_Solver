@@ -6,6 +6,7 @@ namespace lsgc
 {
     void least_squares_gradient_construction(t::MeshInfo& mesh_info, t::DomainTriangles& domain_triangles, f::Fields& fields)
     {
+        #pragma omp parallel for
         for(int i = 0; i < mesh_info.domain_triangles_number; ++i)
         {
             auto[vix, viy] = fields.triangles_centroids_velocities_before[i];
