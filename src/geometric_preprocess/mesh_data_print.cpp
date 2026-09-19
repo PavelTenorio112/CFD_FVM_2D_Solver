@@ -162,6 +162,7 @@ namespace mdp
                         TrianglesData << domain_triangles.from_self_centroid_to_edges_midpoints_vectors[i][j][0] << "\t"
                                       << domain_triangles.from_self_centroid_to_edges_midpoints_vectors[i][j][1] << "\t";
                     }
+                    TrianglesData << "\n";
                 }
                 TrianglesData.close();
             }

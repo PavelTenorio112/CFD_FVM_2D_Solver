@@ -43,7 +43,6 @@ namespace mr
                         mesh_reading_tools.nodes_read_queue.push(read_node);
                     }
                 }
-
                 if(object == "$Elements")
                 {
                     mesh_file >> boundary_edges_and_domain_triangles_number;

@@ -84,7 +84,7 @@ cmake --build build
 
 ## RESULTS
 
-This program will give you a set of `.vtu` files capable of being reproduced as a video in Paraview. These are some pictures as proof of it:
+This program will give you a set of `.vtu` files capable of being reproduced as a video in Paraview:
 
 ![Advective flux around a circle: ](assets/Circle_Advective_Flux.png)
 ![Viscous flux trough a circle: ](assets/Circle_Viscous_Flux.png)

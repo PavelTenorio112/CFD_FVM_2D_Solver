@@ -23,7 +23,7 @@ namespace ui
                 double vx_average = (vix + vkx) / 2,
                        vy_average = (viy + vky) / 2;
 
-                if(type == 1 or type == 2 or type == 3)
+                if(type != 0)
                 {
                     fields.edges_midpoints_velocities[edge_ID][0] = vx_average;
                     fields.edges_midpoints_velocities[edge_ID][1] = vy_average;

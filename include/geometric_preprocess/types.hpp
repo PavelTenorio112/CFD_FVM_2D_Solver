@@ -25,10 +25,11 @@ namespace t
     };
     struct DomainTriangles
     {
-        std::vector <double> areas;
         std::vector <std::array<int, 3>> nodes_IDs;
         std::vector <std::array<int, 3>> edges_IDs;
         std::vector <std::array<int, 3>> neighbor_triangles_IDs;
+
+        std::vector <double> areas;
         std::vector <std::array<double, 2>> centroids;
         std::vector <std::array<std::array<double, 2>, 3>> unit_normal_vectors;
         std::vector <std::array<std::array<double, 2>, 3>> from_self_centroid_to_neighbor_triangles_centroids_vectors;
@@ -72,7 +73,6 @@ namespace t
     {
         int ID;
         double x, y;
-        std::array <int, 2> position;
     };
     struct EdgeRead
     {

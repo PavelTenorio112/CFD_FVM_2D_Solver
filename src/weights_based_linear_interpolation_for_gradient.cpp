@@ -5,7 +5,7 @@
 namespace wblifg
 {
     void weights_based_linear_interpolation_for_gradients(t::MeshInfo& mesh_info, t::Edges& edges, f::Fields &fields)
-    {       
+    {   
         for(int i = 0; i < mesh_info.edges_number; ++i)
         {
             auto[triangle_0_ID , triangle_1_ID] = edges.triangles_IDs[i];

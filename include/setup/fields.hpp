@@ -11,5 +11,6 @@ namespace f
         
         std::vector <std::array<double, 2> > edges_midpoints_velocities;
         std::vector <std::array <std::array<double, 2>, 2> > edges_midpoints_gradient;
+
     };
 }
