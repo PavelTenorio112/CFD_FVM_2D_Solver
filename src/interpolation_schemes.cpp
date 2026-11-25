@@ -6,52 +6,30 @@
 
 namespace is
 {
-    void first_order_upwind_interpolation(t::MeshInfo &mesh_info, t::Edges& edges, t::DomainTriangles& domain_triangles, f::Fields &fields)
+    void first_order_upwind_interpolation(t::MeshInfo &mesh_info, t::Edges& edges, [[maybe_unused]] t::DomainTriangles& domain_triangles, f::Fields &fields)
     {
-        for(int i = 0; i < mesh_info.domain_triangles_number; ++i)
+        for(int j = 0; j < mesh_info.edges_number; ++j)
         {
-            double vix = fields.triangles_centroids_velocities_before[i][0],
-                   viy = fields.triangles_centroids_velocities_before[i][1];
-
-            for(int j = 0; j < 3; ++j)
+            auto[triangle_0_ID, triangle_1_ID] = edges.triangles_IDs[j];
+            auto[v0x, v0y] = fields.triangles_centroids_velocities_before[triangle_0_ID];
+            auto[v1x, v1y] = fields.triangles_centroids_velocities_before[triangle_1_ID];
+            double vx_average = (v0x + v1x) / 2;
+            double vy_average = (v0y + v1y) / 2;
+            auto[nx, ny] = edges.unit_normal_vectors[j];
+            double flux = vx_average * nx + vy_average * ny;
+            if(flux >= 0)
             {
-                int edge_ID = domain_triangles.edges_IDs[i][j],
-                    neighbor_triangle_ID = domain_triangles.neighbor_triangles_IDs[i][j],
-                    type = edges.types[edge_ID];
-
-                auto[vkx, vky] = fields.triangles_centroids_velocities_before[neighbor_triangle_ID];
-
-                double vx_average = (vix + vkx) / 2,
-                       vy_average = (viy + vky) / 2;
-
-                if(type != 0)
-                {
-                    fields.edges_midpoints_velocities[edge_ID][0] = vx_average;
-                    fields.edges_midpoints_velocities[edge_ID][1] = vy_average;
-                }
-                else
-                {
-                    double nijx = domain_triangles.unit_normal_vectors[i][j][0],
-                           nijy = domain_triangles.unit_normal_vectors[i][j][1],
-                           average_velocity_flux = (vx_average * nijx) + (vy_average * nijy);
-
-                    if(average_velocity_flux >= 0)
-                    {
-                        fields.edges_midpoints_velocities[edge_ID][0] = vix;
-                        fields.edges_midpoints_velocities[edge_ID][1] = viy;
-                    }
-                    else
-                    {
-                        fields.edges_midpoints_velocities[edge_ID][0] = vkx;
-                        fields.edges_midpoints_velocities[edge_ID][1] = vky;
-                    }
-                }
-
+                fields.edges_midpoints_velocities[j][0] = v0x;
+                fields.edges_midpoints_velocities[j][1] = v0y;
+            }
+            else
+            {
+                fields.edges_midpoints_velocities[j][0] = v1x;
+                fields.edges_midpoints_velocities[j][1] = v1y;
             }
         }
         return;
     }
-
     void weights_based_linear_interpolation_for_velocity_gradient(t::MeshInfo& mesh_info, t::Edges& edges, f::Fields &fields)
     {   
         for(int i = 0; i < mesh_info.edges_number; ++i)

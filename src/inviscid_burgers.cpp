@@ -44,7 +44,6 @@ namespace ib
                 c::gradient_boundary_conditions(mesh_info, domain_triangles, ghost_triangles, fields);
 
                 is::weights_based_linear_interpolation_for_velocity_gradient(mesh_info, edges, fields);
-
                 is::orthogonality_correction_for_velocity_gradient_interpolation(mesh_info, domain_triangles, fields);
 
                 for(int i = 0; i < mesh_info.domain_triangles_number; ++i)

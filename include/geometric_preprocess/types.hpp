@@ -21,6 +21,7 @@ namespace t
         std::vector <std::array<double, 2>> middle_points;
         std::vector <std::array<double, 2>> geometric_weights;
         std::vector <std::array<double, 2>> distances_from_midpoint_to_triangles_centroids;
+        std::vector <std::array<double, 2>> unit_normal_vectors;
 
     };
     struct DomainTriangles

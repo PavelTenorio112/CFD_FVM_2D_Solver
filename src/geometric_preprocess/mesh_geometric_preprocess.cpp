@@ -184,6 +184,7 @@ namespace mgp
             edges.middle_points.resize(edges_number);
             edges.geometric_weights.resize(edges_number);
             edges.distances_from_midpoint_to_triangles_centroids.resize(edges_number);
+            edges.unit_normal_vectors.resize(edges_number);
         }
         
         /*
@@ -418,6 +419,39 @@ namespace mgp
                 domain_triangles.from_self_centroid_to_edges_midpoints_vectors[i][1][1] = edges.middle_points[edge_1_ID][1] - domain_triangles.centroids[i][1];
                 domain_triangles.from_self_centroid_to_edges_midpoints_vectors[i][2][0] = edges.middle_points[edge_2_ID][0] - domain_triangles.centroids[i][0];
                 domain_triangles.from_self_centroid_to_edges_midpoints_vectors[i][2][1] = edges.middle_points[edge_2_ID][1] - domain_triangles.centroids[i][1];
+
+                if(edges.triangles_IDs[edge_0_ID][0] == i)
+                {
+                    edges.unit_normal_vectors[edge_0_ID][0] = domain_triangles.unit_normal_vectors[i][0][0];
+                    edges.unit_normal_vectors[edge_0_ID][1] = domain_triangles.unit_normal_vectors[i][0][1];
+                }
+                else
+                {
+                    edges.unit_normal_vectors[edge_0_ID][0] = - domain_triangles.unit_normal_vectors[i][0][0];
+                    edges.unit_normal_vectors[edge_0_ID][1] = - domain_triangles.unit_normal_vectors[i][0][1];
+                }
+                if(edges.triangles_IDs[edge_1_ID][0] == i)
+                {
+                    edges.unit_normal_vectors[edge_1_ID][0] = domain_triangles.unit_normal_vectors[i][1][0];
+                    edges.unit_normal_vectors[edge_1_ID][1] = domain_triangles.unit_normal_vectors[i][1][1];
+                }
+                else
+                {
+                    edges.unit_normal_vectors[edge_1_ID][0] = - domain_triangles.unit_normal_vectors[i][1][0];
+                    edges.unit_normal_vectors[edge_1_ID][1] = - domain_triangles.unit_normal_vectors[i][1][1];
+                }
+                if(edges.triangles_IDs[edge_2_ID][0] == i)
+                {
+                    edges.unit_normal_vectors[edge_2_ID][0] = domain_triangles.unit_normal_vectors[i][2][0];
+                    edges.unit_normal_vectors[edge_2_ID][1] = domain_triangles.unit_normal_vectors[i][2][1];
+                }
+                else
+                {
+                    edges.unit_normal_vectors[edge_2_ID][0] = - domain_triangles.unit_normal_vectors[i][2][0];
+                    edges.unit_normal_vectors[edge_2_ID][1] = - domain_triangles.unit_normal_vectors[i][2][1];
+                }
+
+            
             }
             return;
         }
@@ -596,22 +630,6 @@ namespace mgp
             }
             return;
         }
-
-        void compute_characteristic_domain_triangles_length(t::MeshInfo& mesh_info, t::Edges& edges, t::DomainTriangles& domain_triangles)
-        {
-            for(int i = 0; i < mesh_info.domain_triangles_number; ++i)
-            {
-                double P_i = 0;
-                double A_i = domain_triangles.areas[i];
-                for(int j = 0; j < 3; ++j)
-                {
-                    int edge_ID = domain_triangles.edges_IDs[i][j];
-                    P_i += edges.lengths[edge_ID];
-                }
-                domain_triangles.characteristic_length[i] = 4 * A_i / P_i; 
-            }
-            return;
-        }
     }
 
 
@@ -636,7 +654,6 @@ namespace mgp
         compute_centroid_to_centroid_vectors(mesh_info, edges, domain_triangles, ghost_triangles);
         compute_centroid_to_edges_middle_points_distances(mesh_info, edges, domain_triangles);
         compute_geometric_weights(mesh_info, edges);
-        compute_characteristic_domain_triangles_length(mesh_info, edges, domain_triangles);
         return;
     }
 }
