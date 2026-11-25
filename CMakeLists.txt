@@ -18,13 +18,12 @@ add_executable(CFD_FVM_2D_Solver_Executable
     src/fields_data_print.cpp
     src/inviscid_burgers.cpp
     src/main.cpp
-    src/upwind_interpolation.cpp
     src/least_squares_gradient_construction.cpp
-    src/weights_based_linear_interpolation_for_gradient.cpp
+    src/interpolation_schemes.cpp
 )
 
 target_include_directories(CFD_FVM_2D_Solver_Executable PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
 if(MSVC)

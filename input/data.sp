@@ -1,14 +1,14 @@
 BOUNDARY CONDITIONS
-inlet_vx(m/s): 1.0
+inlet_vx(m/s): 5.0
 inlet_vy(m/s): 0.0
 
 SIMULATION PARAMETERS
-simulation_time(s): 20
-time_step: 0.00005
+simulation_time(s): 10.0
+dt: 0.0001
 frames_per_second: 20
 
 PHYSICAL PARAMETERS
-kinematic_viscosity: 0.000001
+kinematic_viscosity: 0.0001
 
 
 

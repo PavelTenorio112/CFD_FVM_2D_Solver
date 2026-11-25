@@ -1,6 +1,6 @@
-#include "include/setup/simulation_parameters_reader.hpp"
-#include "include/simulation_parameters.hpp"
-#include "include/setup/fields.hpp"
+#include "setup/simulation_parameters_reader.hpp"
+#include "simulation_parameters.hpp"
+#include "setup/fields.hpp"
 #include <fstream>
 #include <string>
 
@@ -15,7 +15,7 @@ namespace spr
                                    >> garbage >> simulation_parameters.vy_inlet
                                    >> garbage >> garbage
                                    >> garbage >> simulation_parameters.total_simulation_time
-                                   >> garbage >> simulation_parameters.time_step
+                                   >> garbage >> simulation_parameters.dt
                                    >> garbage >> simulation_parameters.frames_per_second
                                    >> garbage >> garbage
                                    >> garbage >> simulation_parameters.kinematic_viscosity;

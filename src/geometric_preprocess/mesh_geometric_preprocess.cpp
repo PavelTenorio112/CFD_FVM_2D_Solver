@@ -1,4 +1,4 @@
-#include "include/geometric_preprocess/types.hpp"
+#include "geometric_preprocess/types.hpp"
 #include <utility>
 #include <cmath>
 #include <fstream>
@@ -24,6 +24,7 @@ namespace mgp
             domain_triangles.edges_IDs.resize(mesh_info.domain_triangles_number);
             domain_triangles.neighbor_triangles_IDs.resize(mesh_info.domain_triangles_number);
             domain_triangles.areas.resize(mesh_info.domain_triangles_number);
+            domain_triangles.characteristic_length.resize(mesh_info.domain_triangles_number);
             domain_triangles.centroids.resize(mesh_info.domain_triangles_number);
             domain_triangles.unit_normal_vectors.resize(mesh_info.domain_triangles_number);
             domain_triangles.from_self_centroid_to_neighbor_triangles_centroids_vectors.resize(mesh_info.domain_triangles_number);
@@ -542,9 +543,9 @@ namespace mgp
 
 
 
-                double distance_0 = std::sqrt(delta_0_x * delta_0_x + delta_0_y * delta_0_y),
-                       distance_1 = std::sqrt(delta_1_x * delta_1_x + delta_1_y * delta_1_y),
-                       distance_2 = std::sqrt(delta_2_x * delta_2_x + delta_2_y * delta_2_y);
+                double distance_0 = std::sqrt(delta_0_x * delta_0_x + delta_0_y * delta_0_y);
+                double distance_1 = std::sqrt(delta_1_x * delta_1_x + delta_1_y * delta_1_y);
+                double distance_2 = std::sqrt(delta_2_x * delta_2_x + delta_2_y * delta_2_y);
 
                 if(edges.triangles_IDs[edge_0_ID][0] == i)
                 {
@@ -595,6 +596,22 @@ namespace mgp
             }
             return;
         }
+
+        void compute_characteristic_domain_triangles_length(t::MeshInfo& mesh_info, t::Edges& edges, t::DomainTriangles& domain_triangles)
+        {
+            for(int i = 0; i < mesh_info.domain_triangles_number; ++i)
+            {
+                double P_i = 0;
+                double A_i = domain_triangles.areas[i];
+                for(int j = 0; j < 3; ++j)
+                {
+                    int edge_ID = domain_triangles.edges_IDs[i][j];
+                    P_i += edges.lengths[edge_ID];
+                }
+                domain_triangles.characteristic_length[i] = 4 * A_i / P_i; 
+            }
+            return;
+        }
     }
 
 
@@ -619,6 +636,7 @@ namespace mgp
         compute_centroid_to_centroid_vectors(mesh_info, edges, domain_triangles, ghost_triangles);
         compute_centroid_to_edges_middle_points_distances(mesh_info, edges, domain_triangles);
         compute_geometric_weights(mesh_info, edges);
+        compute_characteristic_domain_triangles_length(mesh_info, edges, domain_triangles);
         return;
     }
 }

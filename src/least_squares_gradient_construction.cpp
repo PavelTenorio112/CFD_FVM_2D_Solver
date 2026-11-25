@@ -1,7 +1,7 @@
-#include"include/least_squares_gradient_construction.hpp"
-#include"include/geometric_preprocess/types.hpp"
-#include"include/setup/fields.hpp"
-#include<iostream>
+#include"least_squares_gradient_construction.hpp"
+#include"geometric_preprocess/types.hpp"
+#include"setup/fields.hpp"
+
 namespace lsgc
 {
     void least_squares_gradient_construction(t::MeshInfo& mesh_info, t::DomainTriangles& domain_triangles, f::Fields& fields)

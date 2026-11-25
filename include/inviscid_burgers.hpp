@@ -1,7 +1,7 @@
 #pragma once
-#include"include/geometric_preprocess/types.hpp"
-#include"include/setup/fields.hpp"
-#include"include/simulation_parameters.hpp"
+#include"geometric_preprocess/types.hpp"
+#include"setup/fields.hpp"
+#include"simulation_parameters.hpp"
 
 namespace ib
 {

@@ -1,12 +1,13 @@
-#include "include/setup/conditions.hpp"
-#include "include/geometric_preprocess/types.hpp"
-#include "include/setup/fields.hpp"
-#include "include/setup/simulation_parameters_reader.hpp"
+#include "setup/conditions.hpp"
+#include "geometric_preprocess/types.hpp"
+#include "setup/fields.hpp"
+#include "setup/simulation_parameters_reader.hpp"
 #include <cmath>
+#include <iostream>
 
 namespace c
 {
-    void initial_conditions(t::MeshInfo &mesh_info, f::Fields &fields)
+    void initial_conditions(t::MeshInfo &mesh_info, f::Fields &fields, t::Edges& edges, t::DomainTriangles& domain_triangles, sp::SimulationParameters& simulation_parameters)
     {
         fields.triangles_centroids_velocities_before.resize(mesh_info.triangles_number);
         fields.triangles_centroids_velocities_after.resize(mesh_info.triangles_number);
@@ -15,39 +16,78 @@ namespace c
         fields.edges_midpoints_velocities.resize(mesh_info.edges_number);
         fields.edges_midpoints_gradient.resize(mesh_info.edges_number);
 
+
+
         //Quiescent initial condition
         for(int i = 0; i < mesh_info.domain_triangles_number; ++i) 
         {
             fields.triangles_centroids_velocities_before[i][0] = 0.0;
             fields.triangles_centroids_velocities_before[i][1] = 0.0;
         }
+
+
+        
+        //Computing of the soft start duration
+        double x0 = 0.0, y0 = 0.0, x1 = 0.0, y1 = 0.0;
+        for(int i = 0; i < mesh_info.boundary_edges_number; ++i)
+        {
+            if(edges.types[i] == 1)
+            {
+                x0 = domain_triangles.centroids[edges.triangles_IDs[i][0]][0];
+                y0 = domain_triangles.centroids[edges.triangles_IDs[i][0]][1];
+                break;
+            }
+        }
+        for(int i = 0; i < mesh_info.boundary_edges_number; ++i)
+        {
+            if(edges.types[i] == 2)
+            {
+                x1 = domain_triangles.centroids[edges.triangles_IDs[i][0]][0];
+                y1 = domain_triangles.centroids[edges.triangles_IDs[i][0]][1];
+                break;
+            }
+        }
+        simulation_parameters.t0 = std::abs(std::hypot(x1 - x0, y1 - y0) / std::hypot(simulation_parameters.vx_inlet, simulation_parameters.vy_inlet)) * 0.5;
         return;
     }
     
-    void velocity_boundary_conditions(t::MeshInfo& mesh_info, [[maybe_unused]] t::DomainTriangles& domain_triangles, t::GhostTriangles& ghost_triangles, f::Fields& fields, sp::SimulationParameters& simulation_parameters)
+    void velocity_boundary_conditions(t::MeshInfo& mesh_info, [[maybe_unused]] t::DomainTriangles& domain_triangles, t::GhostTriangles& ghost_triangles, f::Fields& fields, sp::SimulationParameters& simulation_parameters, double t)
     {
         for(int i = mesh_info.domain_triangles_number; i < mesh_info.triangles_number; ++i)
         {
-            int type = ghost_triangles.types[i - mesh_info.domain_triangles_number],
-                inner_triangle_ID = ghost_triangles.inner_triangles_IDs[i - mesh_info.domain_triangles_number];
-            double vx_inlet = simulation_parameters.vx_inlet,
-                   vy_inlet = simulation_parameters.vy_inlet,
-                   ghost_triangle_vx = 0.0, 
-                   ghost_triangle_vy = 0.0;
-            auto [inner_triangle_vx, inner_triangle_vy] = fields.triangles_centroids_velocities_before[inner_triangle_ID];
+            int type = ghost_triangles.types[i - mesh_info.domain_triangles_number];
+            int inner_triangle_ID = ghost_triangles.inner_triangles_IDs[i - mesh_info.domain_triangles_number];
+            double vx_inlet = simulation_parameters.vx_inlet;
+            double vy_inlet = simulation_parameters.vy_inlet;
+            double t0 = simulation_parameters.t0;
+            double vx_inlet_t = 0.0;
+            double vy_inlet_t = 0.0;
+            double ghost_triangle_vx = 0.0;
+            double ghost_triangle_vy = 0.0;
+            auto[inner_triangle_vx, inner_triangle_vy] = fields.triangles_centroids_velocities_before[inner_triangle_ID];
             
-
-
             if(type == 1) // Inlet
             {
-                ghost_triangle_vx = 2 * vx_inlet - inner_triangle_vx;
-                ghost_triangle_vy = 2 * vy_inlet - inner_triangle_vy;
+                if(t < t0)
+                {
+                    vx_inlet_t = 3 * vx_inlet * (t / t0) * (t / t0) - 2 * vx_inlet * (t / t0) * (t / t0) * (t / t0);
+                    vy_inlet_t = 3 * vy_inlet * (t / t0) * (t / t0) - 2 * vy_inlet * (t / t0) * (t / t0) * (t / t0);
+                }
+                else
+                {
+                    vx_inlet_t = vx_inlet;
+                    vy_inlet_t = vy_inlet;
+                }
+                ghost_triangle_vx = 2 * vx_inlet_t - inner_triangle_vx;
+                ghost_triangle_vy = 2 * vy_inlet_t - inner_triangle_vy;
             }
+            
             else if(type == 2) // Outlet
             {
                 ghost_triangle_vx = inner_triangle_vx;
                 ghost_triangle_vy = inner_triangle_vy;
             }
+
             else if(type == 3) // Walls
             {
                 // no-slip condition

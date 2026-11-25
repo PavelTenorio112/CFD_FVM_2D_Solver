@@ -1,6 +1,6 @@
-#include "include/fields_data_print.hpp"
-#include "include/geometric_preprocess/types.hpp"
-#include "include/setup/fields.hpp"
+#include "fields_data_print.hpp"
+#include "geometric_preprocess/types.hpp"
+#include "setup/fields.hpp"
 #include <iostream>
 #include <fstream>
 #include <iomanip>
